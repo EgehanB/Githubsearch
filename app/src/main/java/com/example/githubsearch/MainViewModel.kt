@@ -6,11 +6,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel constructor(private val repository: MainRepository)  : ViewModel() {
+class MainViewModel constructor(private val repository: MainRepository) : ViewModel() {
 
-    val UserList = MutableLiveData<List<GithubUser>>()
-
-    val RepoList = MutableLiveData<List<GithubRepo>>()
+    val userList = MutableLiveData<List<GithubUser>>()
+    val repoList = MutableLiveData<List<GithubRepo>>()
     val errorMessage = MutableLiveData<String>()
 
     fun getAllUsers(search: String?) {
@@ -20,7 +19,7 @@ class MainViewModel constructor(private val repository: MainRepository)  : ViewM
                 call: Call<GithubUserResponse>,
                 response: Response<GithubUserResponse>
             ) {
-                UserList.postValue(response.body()!!.items)
+                userList.postValue(response.body()!!.items)
             }
 
             override fun onFailure(call: Call<GithubUserResponse>, t: Throwable) {
@@ -36,7 +35,7 @@ class MainViewModel constructor(private val repository: MainRepository)  : ViewM
                 call: Call<GithubRepoResponse>,
                 response: Response<GithubRepoResponse>
             ) {
-                RepoList.postValue(response.body()!!.items)
+                repoList.postValue(response.body()!!.items)
             }
 
             override fun onFailure(call: Call<GithubRepoResponse>, t: Throwable) {

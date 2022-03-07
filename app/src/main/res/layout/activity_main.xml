@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <androidx.appcompat.widget.SearchView
         android:id="@+id/user_search"
         android:layout_width="match_parent"
@@ -29,4 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/user_search"
         tools:itemCount="5"
         tools:listitem="@layout/item_user" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

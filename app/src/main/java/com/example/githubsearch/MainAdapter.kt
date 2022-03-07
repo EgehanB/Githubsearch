@@ -1,8 +1,11 @@
 package com.example.githubsearch
 
+import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.databinding.ItemHeaderBinding
 import com.example.githubsearch.databinding.ItemRepoBinding
@@ -48,16 +51,24 @@ class MainAdapter(private val onItemClicked: (position: Int) -> Unit) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         if (holder is UserViewHolder) {
-            val user = users[position-1]
+            val user = users[position - 1]
+            holder.itemView.setOnClickListener {
+
+                val activity = holder.itemView.context as Activity
+                val intent =
+                    Intent(activity, DetailActivity::class.java).putExtra("detail", user.login)
+                //     activity.startActivity(intent)
+                //  startActivity(intent.putExtra("detail", user.login))
+
+            }
             holder.binding.login.text = user.login
         } else if (holder is RepoViewHolder) {
-            val repo = repos[position-2-users.size]
-            holder.binding.login.text = repo.name
-        }
-        else if (holder is HeaderViewHolder){
-            if (position == 0){
+            val repo = repos[position - 2 - users.size]
+            holder.binding.name.text = repo.name
+        } else if (holder is HeaderViewHolder) {
+            if (position == 0) {
                 holder.binding.header.text = "USER"
-            }else {
+            } else {
                 holder.binding.header.text = "REPO"
             }
         }
@@ -81,19 +92,26 @@ class MainAdapter(private val onItemClicked: (position: Int) -> Unit) :
     }
 
     class UserViewHolder(
-        val  binding: ItemUserBinding,
+        val binding: ItemUserBinding,
         private val onItemClicked: (position: Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+        //  val   intent = Intent(itemView.setOnClickListener(this), DetailActivity::class.java)
+
         init {
             itemView.setOnClickListener(this)
+
         }
 
         override fun onClick(v: View) {
             val position = adapterPosition
+
             onItemClicked(position)
+
         }
 
+
     }
+
 
     class RepoViewHolder(val binding: ItemRepoBinding) : RecyclerView.ViewHolder(binding.root)
 

@@ -8,18 +8,17 @@ import retrofit2.http.Query
 
 interface RetrofitService {
     @GET("search/users")
-    fun gelAllUsers(@Query("q") search:  String?): Call<GithubUserResponse>
+    fun getAllUsers(@Query("q") search: String?): Call<GithubUserResponse>
 
     @GET("search/repositories")
-      fun gelAllRepos(@Query ("q") search: String?): Call<GithubRepoResponse>
+    fun getAllRepos(@Query("q") search: String?): Call<GithubRepoResponse>
 
 
-
-    companion object{
+    companion object {
         var retrofitService: RetrofitService? = null
 
-        fun getInstance() : RetrofitService{
-            if (retrofitService == null){
+        fun getInstance(): RetrofitService {
+            if (retrofitService == null) {
                 val retrofit = Retrofit.Builder()
                     .baseUrl("https://api.github.com/")
                     .addConverterFactory(GsonConverterFactory.create())
