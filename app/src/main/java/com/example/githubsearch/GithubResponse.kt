@@ -64,7 +64,7 @@ class GithubUser : Serializable {
 
 }
 
-class GithubRepo {
+class GithubRepo : Serializable {
     @SerializedName("id")
     var id: Int? = null
 
@@ -298,7 +298,7 @@ class GithubRepo {
     var score: Int? = null
 }
 
-class Owner {
+class Owner: Serializable {
     @SerializedName("login")
     var login: String? = null
 

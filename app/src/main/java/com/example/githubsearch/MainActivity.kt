@@ -4,59 +4,26 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.githubsearch.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity() {
-
+class MainActivity : AppCompatActivity(), ClickListener {
 
     lateinit var binding: ActivityMainBinding
-
 
     lateinit var viewModel: MainViewModel
 
     private val retrofitService = RetrofitService.getInstance()
-    val adapter = MainAdapter { position -> onListItemClick(position) }
 
-
-    private fun onListItemClick(position: Int) {
-
-
-        startActivity(Intent(this, DetailActivity::class.java))
-        /*
-    val intent = Intent(MainAdapter.UserViewHolder() , DetailActivity::class.java)
-         startActivity(intent.putExtra("detail", GithubUser()!!.login))*/
-        /*   Intent(this,DetailActivity::class.java).also{
-                it.putExtra("detail",  viewModel.UserList.toString())*/
-    }
-/*
-        startActivity(
-            Intent(this@MainActivity, DetailActivity::class.java)).
-*/
-
-    /*
-
-      .putExtra("detail",(Serializable) )
-)
-*/
-    //    startActivity(Intent(this,DetailActivity::class.java).putExtra("detail", viewModel.UserList))
-
-
-    /*     val detailfragment = DetailsFragment()
-         supportFragmentManager.beginTransaction().replace(R.id.main, detailfragment)
-             .addToBackStack(null).commit()
- */
-
+    val adapter = MainAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         viewModel =
             ViewModelProvider(this, MyViewModelFactory(MainRepository(retrofitService))).get(
@@ -75,7 +42,6 @@ class MainActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
         })
 
-
         binding.userSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(search: String?): Boolean {
                 viewModel.getAllUsers(search)
@@ -90,6 +56,18 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+    }
+
+    override fun onUserClicked(user: GithubUser) {
+        val intent = Intent(this@MainActivity, DetailActivity::class.java)
+        intent.putExtra("userdetail", user)
+        startActivity(intent)
+    }
+
+    override fun onRepoClicked(repo: GithubRepo) {
+        val intent = Intent(this@MainActivity, DetailActivity::class.java)
+        intent.putExtra("repodetail", repo)
+        startActivity(intent)
     }
 
 }
